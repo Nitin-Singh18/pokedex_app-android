@@ -172,7 +172,7 @@ fun PokedexEntry(
 
     Box(
         contentAlignment = Center,
-        modifier = Modifier
+        modifier = modifier
             .shadow(5.dp, shape = RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
             .aspectRatio(1f)
@@ -193,14 +193,8 @@ fun PokedexEntry(
         Column {
             SubcomposeAsyncImage(
                 model =
-//                entry.imageUrl,
                 ImageRequest.Builder(LocalContext.current)
                     .data(entry.imageUrl)
-//                    .target {
-//                        viewModel.calculateDominantColor(it) { color ->
-//                            dominantColor = color
-//                        }
-//                    }
                     .crossfade(true)
                     .build(),
                 contentDescription = entry.pokemonName,
@@ -212,6 +206,11 @@ fun PokedexEntry(
                         color = MaterialTheme.colors.primary,
                         modifier = Modifier.scale(0.5f)
                     )
+                },
+                onSuccess = {
+                    viewModel.calculateDominantColor(it.result.drawable) { color ->
+                        dominantColor = color
+                    }
                 }
             )
             Text(
@@ -238,15 +237,14 @@ fun PokedexRow(
             PokedexEntry(
                 entry = entries[rowIndex * 2],
                 navController = navController,
-//                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f)
             )
-//            Spacer(modifier = Modifier.width(16.dp))
-
+            Spacer(modifier = Modifier.width(16.dp))
             if (entries.size >= rowIndex * 2 + 2) {
                 PokedexEntry(
                     entry = entries[rowIndex * 2 + 1],
                     navController = navController,
-//                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f)
                 )
             } else {
                 Spacer(modifier = Modifier.weight(1f))
